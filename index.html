@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --button-blue: #3498db;
+        }
+
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --container-bg: #2d2d2d;
+            --text-color: #f4f4f4;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.3s ease;
+        }
+
+        .calculator-card {
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 500px;
+            position: relative;
+        }
+
+        .top-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .inputs {
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .op-btn { background-color: var(--button-blue); color: white; }
+        .dark-mode-btn { background-color: #333; color: white; }
+        .alert-btn { background-color: #27ae60; color: white; }
+
+        button:hover { opacity: 0.8; }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator-card">
+    <div class="top-buttons">
+        <button class="alert-btn" onclick="toggleAlert()">Alert: ON</button>
+        <button class="dark-mode-btn" onclick="toggleDarkMode()">Dark Mode</button>
+    </div>
+
+    <h2>Simple Calculator</h2>
+
+    <div class="inputs">
+        <input type="number" id="num1" placeholder="Enter first number">
+        <input type="number" id="num2" placeholder="Enter second number">
+    </div>
+
+    <div class="button-group">
+        <button class="op-btn" onclick="calculate('+')">Add (+)</button>
+        <button class="op-btn" onclick="calculate('-')">Subtract (-)</button>
+        <button class="op-btn" onclick="calculate('*')">Multiply (*)</button>
+        <button class="op-btn" onclick="calculate('/')">Divide (/)</button>
+        <button class="op-btn" style="background-color: #2980b9;" onclick="clearFields()">Clear (C)</button>
+    </div>
+
+    <p id="result">Result: 0</p>
+</div>
+
+<script>
+    let alertsEnabled = true;
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    function toggleAlert() {
+        alertsEnabled = !alertsEnabled;
+        event.target.innerText = `Alert: ${alertsEnabled ? 'ON' : 'OFF'}`;
+        event.target.style.backgroundColor = alertsEnabled ? '#27ae60' : '#c0392b';
+    }
+
+    function calculate(operator) {
+        const n1 = parseFloat(document.getElementById('num1').value);
+        const n2 = parseFloat(document.getElementById('num2').value);
+        let res = 0;
+
+        if (isNaN(n1) || isNaN(n2)) {
+            alert("Please enter both numbers!");
+            return;
+        }
+
+        switch(operator) {
+            case '+': res = n1 + n2; break;
+            case '-': res = n1 - n2; break;
+            case '*': res = n1 * n2; break;
+            case '/': 
+                res = n2 !== 0 ? n1 / n2 : "Cannot divide by zero"; 
+                break;
+        }
+
+        document.getElementById('result').innerText = `Result: ${res}`;
+        
+        if (alertsEnabled) {
+            alert(`The result is: ${res}`);
+        }
+    }
+
+    function clearFields() {
+        document.getElementById('num1').value = '';
+        document.getElementById('num2').value = '';
+        document.getElementById('result').innerText = 'Result: 0';
+    }
+</script>
+
+</body>
+</html>
